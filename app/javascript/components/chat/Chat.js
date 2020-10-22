@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useReducer } from "react"
 import PropTypes from "prop-types"
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -30,43 +30,44 @@ const useStyles = makeStyles({
   }
 });
 
-
+function reducer(state, action) {
+  switch (action.type) {
+    case "set":
+      return { messages: action.payload };
+    case "add":
+      return { messages: [...state.messages, action.payload] };
+  }
+}
 
 export default function Chat(props) {
   const classes = useStyles();
-  const [ messages, setMessages ] = useState(props.messages);
   const [ newMessage, setNewMessage ] = useState('');
-  //const [ channel, setChannel ] = useState(null);
-  let channel = null
-
-  function updateMessages(data) {
-    console.log(messages)
-    setMessages([...messages, data.message])
-  }
+  const [state, dispatch] = useReducer(reducer, { messages: props.messages || [] });
+  const [ channel, setChannel ] = useState(null);
 
   useEffect(() => {
-    channel = consumer.subscriptions.create(
+    const channel = consumer.subscriptions.create(
       'ChatChannel', {
-        received: updateMessages
+        received: (data) => {
+          dispatch({ type: 'add', payload: data.message })
+        },
       }
-    );
+    )
 
+    setChannel(channel)
   }, [])
 
-
   async function addMessage() {
-    console.log(channel)
     await channel.send({ email: props.email, body: newMessage })
     setNewMessage('')
   }
-
 
   return (
     <>
       <h1> Chat </h1>
 
       <ul className={classes.ul} >
-       { messages.map((msg) => (
+       { state.messages.map((msg) => (
            <li key={msg.id} className={classes.message}>
               <strong>{ msg.user.nickname }</strong>
               <br />
