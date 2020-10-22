@@ -13,7 +13,8 @@ class ChatController < ApplicationController
     ActionCable.server.broadcast "ChatChannel", { hey: 'ya' }
 
     unless (email.present? && nickname.present?)
-      redirect_to :root_path
+      redirect_to root_path
+      return
     end
 
     render(
