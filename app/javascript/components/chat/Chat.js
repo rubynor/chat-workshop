@@ -118,6 +118,23 @@ export default function Chat(props) {
   }
 
   function messageRender(msg, i) {
+    const prevMsg = i > 0 ? state.messages[i-1] : { user: { id: -1 } }
+
+    if (msg.user.id == prevMsg.user.id) {
+      return (
+        <li key={msg.id} className={classes.messageContainer}>
+          <div className={classes.avatar}>
+          </div>
+
+          <div className={classes.message}>
+            <p className={classes.messageBody} >
+              {msg.body}
+            </p>
+          </div>
+        </li>
+      )
+    }
+
     return (
       <li key={msg.id} className={classes.messageContainer}>
         <div className={classes.avatar}>
