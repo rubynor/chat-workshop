@@ -13,13 +13,18 @@ import axios from 'axios';
 import consumer from '../../channels/consumer';
 
 const useStyles = makeStyles({
-  root: {
+  chatRoom: {
     maxHeight: 700,
-    maxWidth: 1000,
-    //margin: '0px auto',
-    //marginTop: '1%',
+    maxWidth: '100%',
+    margin: '0px auto',
+    marginTop: '1%',
     overflowY: 'scroll',
     overflowX: 'hidden'
+  },
+  root: {
+    maxWidth: 1000,
+    margin: '0px auto',
+    marginTop: '1%',
   },
   row: {
     marginBottom: '10px',
@@ -35,7 +40,7 @@ const useStyles = makeStyles({
     justifyContent: 'flex-start',
     alignItems: 'flex-start'
   },
-  messageBody: { 
+  messageBody: {
     marginTop: '5px'
   },
   messageContainer: {
@@ -47,6 +52,17 @@ const useStyles = makeStyles({
     marginRight: '10px',
     display: 'flex',
     flexShrink: 0
+  },
+  textField: {
+    width: '90%',
+    maxWidth: 1000,
+  },
+  button: {
+    height: 55,
+    width: '10%',
+  },
+  heading: {
+    fontFamily: ['Roboto']
   }
 });
 
@@ -75,7 +91,7 @@ export default function Chat(props) {
   }
 
   useEffect(scrollToBottom, []);
-  
+
   useEffect(scrollToBottomSmooth, [state.messages]);
 
   useEffect(() => {
@@ -99,31 +115,33 @@ export default function Chat(props) {
 
   return (
     <>
-      <h1> Chat </h1>
-      <Card className={classes.root}>
-        <ul className={classes.messageList}>
-          { state.messages.map((msg) => (
-              <li key={msg.id} className={classes.messageContainer}>
-                <div className={classes.avatar}>
-                  <Avatar alt={msg.user.nickname} src={msg.user.avatar_url} />
-                </div>
-
-                <div className={classes.message}>
-                  <div>
-                    <strong>{ msg.user.nickname }</strong>
+      <div className={classes.root}>
+        <h1 className={classes.heading}> Chat </h1>
+        <Card className={classes.chatRoom}>
+          <ul className={classes.messageList}>
+            { state.messages.map((msg) => (
+                <li key={msg.id} className={classes.messageContainer}>
+                  <div className={classes.avatar}>
+                    <Avatar alt={msg.user.nickname} src={msg.user.avatar_url} />
                   </div>
-                  <p className={classes.messageBody} >
-                    {msg.body}
-                  </p>
-                </div>
-              </li>
-            )
-          )}
-        </ul>
-        <div ref={messagesEndRef} />
-      </Card>
+
+                  <div className={classes.message}>
+                    <div>
+                      <strong>{ msg.user.nickname }</strong>
+                    </div>
+                    <p className={classes.messageBody} >
+                      {msg.body}
+                    </p>
+                  </div>
+                </li>
+              )
+            )}
+          </ul>
+          <div ref={messagesEndRef} />
+        </Card>
+
         <TextField
-          className={classes.spacing}
+          className={classes.textField}
           id="message"
           label="message"
           variant="outlined"
@@ -132,14 +150,14 @@ export default function Chat(props) {
           onKeyPress={e => {e.key == 'Enter' && addMessage()}}
         />
         <Button
-          type="submit"
-          className={classes.spacing}
+          className={classes.button}
           variant="contained"
           color="primary"
           onClick={addMessage}
         >
           send
         </Button>
+      </div>
     </>
   );
 }
