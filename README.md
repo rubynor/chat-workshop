@@ -1,27 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+1. clone the repo
+2. run `bundle install`
+3. run `rails db:migrate`
+4. run `rails s`
 
 ## Oppgaver
 
@@ -31,7 +13,12 @@ Backend i ruby on rails
 
 ### 2. Lag en wikibot
 Hvis en bruker skriver `wiki galdhøpiggen` i chat, skal den slå opp galdhøpiggen på wikipedia og hente ut første avsnitt og skrive det som en melding i chat.
-- Endre på chatboten som ligger i `lib/chat/bot.rb`
+- Endre på chatboten som ligger i `lib/chat/bot.rb` eller lag en ny.
+
+Eksempel på hvordan du kan hente ut data fra wikipedia sitt api:
+```text
+https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts|pageimages&exintro&explaintext&generator=search&gsrsearch=intitle:mars&gsrlimit=1&redirects=1
+```
 
 ### 3. Ikke gjenta bilde og nickname i chat når samme bruker sender flere meldinger etter hverandre 
 Denne chatten mangler litt finesse. I gode chat-applikasjoner som slack og discord, viser man ikke bilde og navn/nickname
