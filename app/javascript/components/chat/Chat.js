@@ -117,29 +117,32 @@ export default function Chat(props) {
     setNewMessage('')
   }
 
+  function messageRender(msg, i) {
+    return (
+      <li key={msg.id} className={classes.messageContainer}>
+        <div className={classes.avatar}>
+          <Avatar alt={msg.user.nickname} src={msg.user.avatar_url} />
+        </div>
+
+        <div className={classes.message}>
+          <div>
+            <strong className={classes.font}>{ msg.user.nickname }</strong>
+          </div>
+          <p className={classes.messageBody} >
+            {msg.body}
+          </p>
+        </div>
+      </li>
+    )
+  }
+
   return (
     <>
       <div className={classes.root}>
         <h1 className={classes.font}> Chat </h1>
         <Card className={classes.chatRoom}>
           <ul className={classes.messageList}>
-            { state.messages.map((msg) => (
-                <li key={msg.id} className={classes.messageContainer}>
-                  <div className={classes.avatar}>
-                    <Avatar alt={msg.user.nickname} src={msg.user.avatar_url} />
-                  </div>
-
-                  <div className={classes.message}>
-                    <div>
-                      <strong className={classes.font}>{ msg.user.nickname }</strong>
-                    </div>
-                    <p className={classes.messageBody} >
-                      {msg.body}
-                    </p>
-                  </div>
-                </li>
-              )
-            )}
+            { state.messages.map((msg, i) => messageRender(msg, i)) }
           </ul>
           <div ref={messagesEndRef} />
         </Card>
