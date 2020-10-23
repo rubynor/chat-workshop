@@ -86,7 +86,11 @@ export default function Chat(props) {
 
   async function addMessage(e) {
     scrollToBottom()
-    await channel.send({ email: props.email, body: newMessage })
+    e.preventDefault()
+
+    if (newMessage.length > 0)
+      await channel.send({ email: props.email, body: newMessage })
+
     setNewMessage('')
   }
 
