@@ -14,7 +14,9 @@ import consumer from '../../channels/consumer';
 
 const useStyles = makeStyles({
   chatRoom: {
-    maxHeight: 700,
+    padding: 10,
+    maxHeight: '100%',
+    height: '50vh',
     maxWidth: '100%',
     margin: '0px auto',
     marginTop: '1%',
@@ -23,6 +25,7 @@ const useStyles = makeStyles({
   },
   root: {
     maxWidth: 1000,
+    maxHeight: 700,
     margin: '0px auto',
     marginTop: '1%',
   },
@@ -41,7 +44,8 @@ const useStyles = makeStyles({
     alignItems: 'flex-start'
   },
   messageBody: {
-    marginTop: '5px'
+    marginTop: '5px',
+    fontFamily: ['Roboto']
   },
   messageContainer: {
     display: 'flex',
@@ -61,7 +65,7 @@ const useStyles = makeStyles({
     height: 55,
     width: '10%',
   },
-  heading: {
+  font: {
     fontFamily: ['Roboto']
   }
 });
@@ -116,7 +120,7 @@ export default function Chat(props) {
   return (
     <>
       <div className={classes.root}>
-        <h1 className={classes.heading}> Chat </h1>
+        <h1 className={classes.font}> Chat </h1>
         <Card className={classes.chatRoom}>
           <ul className={classes.messageList}>
             { state.messages.map((msg) => (
@@ -127,7 +131,7 @@ export default function Chat(props) {
 
                   <div className={classes.message}>
                     <div>
-                      <strong>{ msg.user.nickname }</strong>
+                      <strong className={classes.font}>{ msg.user.nickname }</strong>
                     </div>
                     <p className={classes.messageBody} >
                       {msg.body}
