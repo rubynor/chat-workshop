@@ -70,7 +70,13 @@ export default function Chat(props) {
     messagesEndRef.current.scrollIntoView()
   }
 
-  useEffect(scrollToBottom, [state.messages]);
+  const scrollToBottomSmooth = () => {
+    messagesEndRef.current.scrollIntoView({behavior: 'smooth'})
+  }
+
+  useEffect(scrollToBottom, []);
+  
+  useEffect(scrollToBottomSmooth, [state.messages]);
 
   useEffect(() => {
     const channel = consumer.subscriptions.create(
@@ -84,10 +90,7 @@ export default function Chat(props) {
     setChannel(channel)
   }, [])
 
-  async function addMessage(e) {
-    scrollToBottom()
-    e.preventDefault()
-
+  async function addMessage() {
     if (newMessage.length > 0)
       await channel.send({ email: props.email, body: newMessage })
 
