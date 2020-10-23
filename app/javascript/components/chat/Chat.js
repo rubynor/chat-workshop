@@ -85,7 +85,6 @@ export default function Chat(props) {
   }, [])
 
   async function addMessage(e) {
-    e.preventDefault()
     scrollToBottom()
     await channel.send({ email: props.email, body: newMessage })
     setNewMessage('')
@@ -116,7 +115,6 @@ export default function Chat(props) {
         </ul>
         <div ref={messagesEndRef} />
       </Card>
-      <form>
         <TextField
           className={classes.spacing}
           id="message"
@@ -124,6 +122,7 @@ export default function Chat(props) {
           variant="outlined"
           onChange={e => setNewMessage(e.target.value)}
           value={newMessage}
+          onKeyPress={e => {e.key == 'Enter' && addMessage()}}
         />
         <Button
           type="submit"
@@ -134,7 +133,6 @@ export default function Chat(props) {
         >
           send
         </Button>
-      </form>
     </>
   );
 }
