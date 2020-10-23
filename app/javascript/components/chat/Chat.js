@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react"
+import React, { useState, useEffect, useReducer, useRef } from "react"
 import PropTypes from "prop-types"
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -14,10 +14,12 @@ import consumer from '../../channels/consumer';
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
-    maxWidth: 400,
-    margin: '0px auto',
-    marginTop: '10%'
+    maxHeight: 700,
+    maxWidth: 1000,
+    //margin: '0px auto',
+    //marginTop: '1%',
+    overflowY: 'scroll',
+    overflowX: 'hidden'
   },
   row: {
     marginBottom: '10px',
@@ -62,6 +64,13 @@ export default function Chat(props) {
   const [ newMessage, setNewMessage ] = useState('');
   const [state, dispatch] = useReducer(reducer, { messages: props.messages || [] });
   const [ channel, setChannel ] = useState(null);
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView()
+  }
+
+  useEffect(scrollToBottom, [state.messages]);
 
   useEffect(() => {
     const channel = consumer.subscriptions.create(
@@ -76,6 +85,9 @@ export default function Chat(props) {
   }, [])
 
   async function addMessage() {
+    scrollToBottom()
+    e.preventDefault()
+
     if (newMessage.length > 0)
       await channel.send({ email: props.email, body: newMessage })
 
@@ -85,44 +97,47 @@ export default function Chat(props) {
   return (
     <>
       <h1> Chat </h1>
-
-      <ul className={classes.messageList}>
-        { state.messages.map((msg) => (
-            <li key={msg.id} className={classes.messageContainer}>
-              <div className={classes.avatar}>
-                <Avatar alt={msg.user.nickname} src={msg.user.avatar_url} />
-              </div>
-
-              <div className={classes.message}>
-                <div>
-                  <strong>{ msg.user.nickname }</strong>
+      <Card className={classes.root}>
+        <ul className={classes.messageList}>
+          { state.messages.map((msg) => (
+              <li key={msg.id} className={classes.messageContainer}>
+                <div className={classes.avatar}>
+                  <Avatar alt={msg.user.nickname} src={msg.user.avatar_url} />
                 </div>
-                <p className={classes.messageBody} >
-                  {msg.body}
-                </p>
-              </div>
-            </li>
-          )
-        )}
-      </ul>
 
-      <TextField
-        className={classes.spacing}
-        id="message"
-        label="message"
-        variant="outlined"
-        onChange={e => setNewMessage(e.target.value)}
-        value={newMessage}
-      />
-
-      <Button
-        className={classes.spacing}
-        variant="contained"
-        color="primary"
-        onClick={addMessage}
-      >
-        send
-      </Button>
+                <div className={classes.message}>
+                  <div>
+                    <strong>{ msg.user.nickname }</strong>
+                  </div>
+                  <p className={classes.messageBody} >
+                    {msg.body}
+                  </p>
+                </div>
+              </li>
+            )
+          )}
+        </ul>
+        <div ref={messagesEndRef} />
+      </Card>
+      <form>
+        <TextField
+          className={classes.spacing}
+          id="message"
+          label="message"
+          variant="outlined"
+          onChange={e => setNewMessage(e.target.value)}
+          value={newMessage}
+        />
+        <Button
+          type="submit"
+          className={classes.spacing}
+          variant="contained"
+          color="primary"
+          onClick={addMessage}
+        >
+          send
+        </Button>
+      </form>
     </>
   );
 }
