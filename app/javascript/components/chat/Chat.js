@@ -76,7 +76,9 @@ export default function Chat(props) {
   }, [])
 
   async function addMessage() {
-    await channel.send({ email: props.email, body: newMessage })
+    if (newMessage.length > 0)
+      await channel.send({ email: props.email, body: newMessage })
+
     setNewMessage('')
   }
 
