@@ -6,6 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import consumer from '../../channels/consumer';
 
@@ -16,17 +19,32 @@ const useStyles = makeStyles({
     margin: '0px auto',
     marginTop: '10%'
   },
-  spacing: {
-    marginTop: '10px',
-    display: 'block'
+  row: {
+    marginBottom: '10px',
   },
-  ul: {
+  messageList: {
     listStyle: 'none',
     margin: 0,
     padding: 0
   },
   message: {
-    marginTop: '10px'
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start'
+  },
+  messageBody: { 
+    marginTop: '5px'
+  },
+  messageContainer: {
+    display: 'flex',
+    marginBottom: '10px'
+  },
+  avatar: {
+    width: '40px',
+    marginRight: '10px',
+    display: 'flex',
+    flexShrink: 0
   }
 });
 
@@ -66,15 +84,24 @@ export default function Chat(props) {
     <>
       <h1> Chat </h1>
 
-      <ul className={classes.ul} >
-       { state.messages.map((msg) => (
-           <li key={msg.id} className={classes.message}>
-              <strong>{ msg.user.nickname }</strong>
-              <br />
-             {msg.body}
-           </li>
-         )
-       )}
+      <ul className={classes.messageList}>
+        { state.messages.map((msg) => (
+            <li key={msg.id} className={classes.messageContainer}>
+              <div className={classes.avatar}>
+                <Avatar alt={msg.user.nickname} src={msg.user.avatar_url} />
+              </div>
+
+              <div className={classes.message}>
+                <div>
+                  <strong>{ msg.user.nickname }</strong>
+                </div>
+                <p className={classes.messageBody} >
+                  {msg.body}
+                </p>
+              </div>
+            </li>
+          )
+        )}
       </ul>
 
       <TextField
