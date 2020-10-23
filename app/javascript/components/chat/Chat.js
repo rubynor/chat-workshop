@@ -84,7 +84,7 @@ export default function Chat(props) {
     setChannel(channel)
   }, [])
 
-  async function addMessage() {
+  async function addMessage(e) {
     scrollToBottom()
     e.preventDefault()
 
