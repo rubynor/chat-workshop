@@ -21,8 +21,8 @@ class ChatChannel < ApplicationCable::Channel
 
     ActionCable.server.broadcast "chat", { message: msg.as_json(include: :user) }
 
-    Chat::Bot.new(data["body"]).talk
+    #Chat::Bot.new(data["body"]).talk
     #Chat::WikiBot.new(data["body"]).talk
-    #Chat::RaffleBot.new(data["body"]).talk
+    Chat::RaffleBot.new(data["body"]).talk
   end
 end
