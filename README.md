@@ -2,6 +2,7 @@
 
 1. Start med å kjøre `git pull`
 2. Åpne to terminaler og kjør følgende kommandoer:
+ - `bundle`
  - `./bin/webpack-dev-server`
  - `rails s`
 3. Åpne nettleseren (firefox) og gå inn på `localhost:3000`
