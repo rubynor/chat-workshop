@@ -1,9 +1,11 @@
 # README
 
-1. clone the repo
-2. run `bundle install`
-3. run `rails db:migrate`
-4. run `rails s`
+1. Start med å kjøre `git pull`
+2. Åpne to terminaler og kjør følgende kommandoer:
+ - `bundle`
+ - `./bin/webpack-dev-server`
+ - `rails s`
+3. Åpne nettleseren (firefox) og gå inn på `localhost:3000`
 
 ## Oppgaver
 
